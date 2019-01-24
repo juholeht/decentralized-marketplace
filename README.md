@@ -20,12 +20,12 @@ A shopper logs into the app. The web app does not recognize their address so the
  
 ## How to set up project:
 
-1. First install dependencies by executing: cd marketplace/client && npm install
-1. Start ganache-cli by executing: ganache-cli -l 350000000
-1. (Optional) Make sure that project compiles by executing: truffle compile
-1. (Optional) Make sure that project tests are executed successfully: truffle test
-1. Migrate contract to development environment by executing: truffle migrate
-1. Start local server that serves UI by executing: npm run start 
+1. First install dependencies by executing: `cd marketplace/client && npm install`
+1. Start ganache-cli by executing: `ganache-cli -l 350000000`
+1. (Optional) Make sure that project compiles by executing: `truffle compile`
+1. (Optional) Make sure that project tests are executed successfully: `truffle test`
+1. Migrate contract to development environment by executing: `truffle migrate`
+1. Start local server that serves UI by executing: `npm run start` 
 1. UI is now available in http://localhost:3000 (remember to use Metamask or other dapp browser)
 
 Project uses local IPFS node to store product images. Don't worry, you can use project also without IPFS node. In this case
@@ -33,10 +33,10 @@ product image upload feature will be disabled from UI.
 
 ## How to set up IPFS node:
 1. Install IPFS, e.g. https://github.com/ipfs/go-ipfs#install
-1. Next you should initialize it, cmd: ipfs init
-1. Project assumes that node configuration is default, cmd to check: ipfs config Addresses.API (Response should something like: /ip4/127.0.0.1/tcp/5001)
+1. Next you should initialize it, cmd: `ipfs init`
+1. Project assumes that node configuration is default, cmd to check: `ipfs config Addresses.API` (Response should something like: /ip4/127.0.0.1/tcp/5001)
 1. Enable CORS by executing cmds:
-ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
-ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
+`ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'`
+`ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Origin '["*"]'`
 
 1. Finally you ready to start IPFS daemon, cmd: ipfs daemon
