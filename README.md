@@ -1,5 +1,7 @@
 # decentralized-marketplace
-Final project for Consensys Academy Developer Bootcamp 2019
+Final project for Consensys Academy Developer Bootcamp 2019.
+
+Main focus of the project is in Smart contract implementation. UI is there just to show how to integrate it with smart contracts.
 
 ## Introduction:
 
@@ -36,6 +38,7 @@ product image upload feature will be disabled from UI.
 1. Next you should initialize it, cmd: `ipfs init`
 1. Project assumes that node configuration is default, cmd to check: `ipfs config Addresses.API` (Response should something like: /ip4/127.0.0.1/tcp/5001)
 1. Enable CORS by executing cmds:
+
 `ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'`
 `ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Origin '["*"]'`
 
