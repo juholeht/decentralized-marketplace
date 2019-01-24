@@ -37,9 +37,5 @@ product image upload feature will be disabled from UI.
 1. Install IPFS, e.g. https://github.com/ipfs/go-ipfs#install
 1. Next you should initialize it, cmd: `ipfs init`
 1. Project assumes that node configuration is default, cmd to check: `ipfs config Addresses.API` (Response should something like: /ip4/127.0.0.1/tcp/5001)
-1. Enable CORS by executing cmds:
-
-`ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'`
-`ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Origin '["*"]'`
-
+1. Enable CORS by executing cmds: `ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'` & `ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Origin '["*"]'`
 1. Finally you ready to start IPFS daemon, cmd: ipfs daemon
