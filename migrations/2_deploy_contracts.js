@@ -1,9 +1,12 @@
 var Marketplace = artifacts.require("./Marketplace.sol");
-var MarketplaceSecurity = artifacts.require("./MarketplaceSecurity.sol");
 var StringUtil = artifacts.require("./StringUtil.sol");
 
 module.exports = function(deployer) {
-  //deployer.deploy(MarketplaceSecurity);
+  // deploy library and link it to Marketplace which
+  // is the main contract.
+  deployer.deploy(StringUtil);
+  deployer.link(StringUtil, Marketplace);
+  // Marketplace inherits from MarketplaceSecurity
+  // so deploying Marketplace is enough
   deployer.deploy(Marketplace);
-  //deployer.deploy(StringUtil);
 };

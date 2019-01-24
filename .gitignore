@@ -37,6 +37,10 @@ build/
 
 # Dependency directories
 client/node_modules/
+node_modules/
+
+client/package-lock.json
+package-lock.json
 
 # TypeScript v1 declaration files
 typings/
