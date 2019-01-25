@@ -14,13 +14,13 @@ module.exports = {
       port: 8545,
       network_id: "*",
       gas: 5500000,
-    },
-  /*rinkeby: {
+    }/*,
+    rinkeby: {
         provider: new HDWalletProvider(mnemonic, infura),
         network_id: "4",
         gas: 5500000,
-    }
-  },*/
+    }*/
+  },
   solc: {
     optimizer: {
         enabled: true,
