@@ -17,6 +17,7 @@
     "redux": "^4.0.1",
     "redux-responsive": "^4.3.8",
     "truffle-contract": "^3.0.6",
+    "truffle-hdwallet-provider": "^1.0.2",
     "web3": "^1.0.0-beta.35"
   },
   "scripts": {

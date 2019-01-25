@@ -1,8 +1,14 @@
+Test network name: Rinkeby
+Marketplace.sol: 0x2062649e792f0a6E9C2F62504aD2493f6219ED7E (main dapp)
+StringUtil.sol:  0xC2024061ad8b8F5662e159b9be1cC1da7D3A6664 (Library)
+
+Full migration log:
+
 Starting migrations...
 ======================
 > Network name:    'rinkeby'
 > Network id:      4
-> Block gas limit: 7005542
+> Block gas limit: 7008030
 
 
 1_initial_migration.js
@@ -10,11 +16,11 @@ Starting migrations...
 
    Deploying 'Migrations'
    ----------------------
-   > transaction hash:    0xa3ba54cba2ba5494ddda7f8b4f90b7c20df8f450ff8d0377cdf1e4e9d2aef2e4
-   > Blocks: 1            Seconds: 20
-   > contract address:    0xEa4cBCe9368c1c50443DFdE573C5432cb3367C84
+   > transaction hash:    0xdd5e9633ca958da130b172835d24261316cb3f27f125166a2421dbeca7357ba1
+   > Blocks: 1            Seconds: 13
+   > contract address:    0xCefCD68D856d18abE1a551dD5ceBdf2C1980F719
    > account:             0x63559f54F30480d5c7150E91Fdc2C52D04EF7b36
-   > balance:             2.92942718
+   > balance:             2.82555508
    > gas used:            232981
    > gas price:           20 gwei
    > value sent:          0 ETH
@@ -32,11 +38,11 @@ Starting migrations...
 
    Deploying 'StringUtil'
    ----------------------
-   > transaction hash:    0x6e84b5603194b345e1373bb71e22d1f3c8245a11fa01a9422aa5c05a39387105
-   > Blocks: 0            Seconds: 8
-   > contract address:    0xe06C419D3de59dA69b87332B975A7935C88f0b42
+   > transaction hash:    0x2399acc00f2a358feb8b704e9c410c517b17b5bb75f87e916467cf71cbc059ce
+   > Blocks: 1            Seconds: 12
+   > contract address:    0xC2024061ad8b8F5662e159b9be1cC1da7D3A6664
    > account:             0x63559f54F30480d5c7150E91Fdc2C52D04EF7b36
-   > balance:             2.92709096
+   > balance:             2.82321886
    > gas used:            74876
    > gas price:           20 gwei
    > value sent:          0 ETH
@@ -45,11 +51,11 @@ Starting migrations...
 
    Deploying 'Marketplace'
    -----------------------
-   > transaction hash:    0xf02fb10c142f4e2a5615ff43bee36174eafcf8dfe31842ab8aa80b95ef477f93
-   > Blocks: 0            Seconds: 9
-   > contract address:    0x583ed91b80500DAE6edD90075C868ecf1178401d
+   > transaction hash:    0x9aaee2b2639c8244fdc01cc6e487e53f2c16ffe9647818b3733fa6a119e4e1fa
+   > Blocks: 0            Seconds: 8
+   > contract address:    0x2062649e792f0a6E9C2F62504aD2493f6219ED7E
    > account:             0x63559f54F30480d5c7150E91Fdc2C52D04EF7b36
-   > balance:             2.83386984
+   > balance:             2.72999774
    > gas used:            4661056
    > gas price:           20 gwei
    > value sent:          0 ETH

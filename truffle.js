@@ -1,9 +1,9 @@
 
-//var HDWalletProvider = require("truffle-hdwallet-provider")
+/*var HDWalletProvider = require("truffle-hdwallet-provider")
 
-//var mnemonic = "put your own mnemonic here"
-//var infura = "https://rinkeby.infura.io/v3/<id>"
-
+var mnemonic = "use your own mnemonic"
+var infura = "https://rinkeby.infura.io/v3/<ID should be here>"
+*/
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // for more about customizing your Truffle configuration!
@@ -14,13 +14,13 @@ module.exports = {
       port: 8545,
       network_id: "*",
       gas: 5500000,
-    }/*,
-    rinkeby: {
+    },
+  /*rinkeby: {
         provider: new HDWalletProvider(mnemonic, infura),
         network_id: "4",
         gas: 5500000,
-    }*/
-  },
+    }
+  },*/
   solc: {
     optimizer: {
         enabled: true,
