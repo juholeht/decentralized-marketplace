@@ -3,6 +3,9 @@
 # dependencies
 /node_modules
 
+# built smart contracts
+src/contracts
+
 # testing
 /coverage
 

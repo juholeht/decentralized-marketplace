@@ -36,6 +36,7 @@ A shopper logs into the app. The web app does not recognize their address so the
 1. Migrate contract to development environment by executing: `truffle migrate`
 1. Start local server that serves UI by executing: `npm run start` 
 1. UI is now available in http://localhost:3000 (remember to use Metamask or other dapp browser)
+1. Import mnemonic to metamask (printed in ganache-cli's console) to access admin rights. Contract creator will be always administrator.
 
 Project uses local IPFS node to store product images. Don't worry, you can use project also without IPFS node. In this case
 product image upload feature will be disabled from UI.
