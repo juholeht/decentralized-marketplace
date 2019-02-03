@@ -35,9 +35,9 @@ class Withdraw extends React.Component {
         if (contract !== null) {
           let storefronts = [];
           if (UsersUtil.isAdmin(userStatus)) {
-            storefronts = await ContractAccess.getAllStorefronts(contract)
+            storefronts = await ContractAccess.getAllStorefronts(contract, accounts[0])
           } else if (accounts.length > 0) {
-            storefronts = await ContractAccess.getStorefrontsForOwner(contract, accounts[0]);
+            storefronts = await ContractAccess.getStorefrontsForOwner(contract, accounts[0], accounts[0]);
           }
           this.setState({ storefronts: storefronts });
         }
@@ -49,9 +49,9 @@ class Withdraw extends React.Component {
         if (contract !== prevProps.contract || userStatus !== prevProps.userStatus) {
           let storefronts = [];
           if (UsersUtil.isAdmin(userStatus)) {
-            storefronts = await ContractAccess.getAllStorefronts(contract)
+            storefronts = await ContractAccess.getAllStorefronts(contract, accounts[0])
           } else if (accounts.length > 0) {
-            storefronts = await ContractAccess.getStorefrontsForOwner(contract, accounts[0]);
+            storefronts = await ContractAccess.getStorefrontsForOwner(contract, accounts[0], accounts[0]);
           }
           this.setState({ storefronts: storefronts });
         }
@@ -60,11 +60,12 @@ class Withdraw extends React.Component {
     async withdrawClicked(index, balance) {
         const {contract, accounts} = this.props;
         const { storefronts } = this.state;
-        const tx = await contract.withdrawFunds(index, balance, {from: accounts[0]});
-        if (tx.logs[0].event === "LogWithdraw") {
-            const storeFrontOwner = tx.logs[0].args.addr;
-            const storeIndex = parseInt(tx.logs[0].args.storeIndex);
-            const withdrawedAmount = parseInt(tx.logs[0].args.amount);
+        const tx = await contract.methods.withdrawFunds(index, balance).send({from: accounts[0]});
+        if (tx.events.LogWithdraw) {
+            const returnValues = tx.events.LogWithdraw.returnValues;
+            const storeFrontOwner = returnValues.addr;
+            const storeIndex = parseInt(returnValues.storeIndex);
+            const withdrawedAmount = parseInt(returnValues.amount);
 
             const updatedStorefronts = storefronts.map((storefront) => {
                 if (storefront.owner.toUpperCase() === storeFrontOwner.toUpperCase() &&

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import Marketplace from "./contracts/Marketplace.json";
 import getWeb3 from "./utils/getWeb3";
-//import getIpfs from "./utils/getIpfsClient";
-import truffleContract from "truffle-contract";
 import Index from './pages/index';
 import {Actions} from './store/model'
 import {connect} from 'react-redux';
@@ -14,25 +12,22 @@ import "./App.css";
 class App extends Component {
   state = { userStatus: -1, web3: null, accounts: null, contract: null };
 
-  constructor(props) {
-    super(props)
-    this.componentDidMount();
-  }
-
   componentDidMount = async () => {
     try {
       const {ipfsLoaded} = this.props;
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
-      //const ipfs = await getIpfs();
-      //console.log(ipfs);
+
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
 
       // Get the contract instance.
-      const Contract = truffleContract(Marketplace);
-      Contract.setProvider(web3.currentProvider);
-      const instance = await Contract.deployed();
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = Marketplace.networks[networkId];
+      const instance = new web3.eth.Contract(
+        Marketplace.abi,
+        deployedNetwork && deployedNetwork.address,
+      );
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
@@ -62,9 +57,10 @@ class App extends Component {
   intialize = async () => {
     const { contract, accounts } = this.state;
 
-    const userStatusResponse = await contract.getUserStatus.call(accounts[0], { from: accounts[0] });
-    this.setState({ userStatus: userStatusResponse.toNumber() });
-    this.props.userStatusUpdated(Translator.convertUserStatusCode(userStatusResponse.toNumber()));
+    const userStatusResponse = await contract.methods.getUserStatus(accounts[0]).call({ from: accounts[0] });
+    const userStatusInt = parseInt(userStatusResponse);
+    this.setState({ userStatus: userStatusInt });
+    this.props.userStatusUpdated(Translator.convertUserStatusCode(userStatusInt));
   };
 
   render() {

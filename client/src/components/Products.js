@@ -52,11 +52,11 @@ class Products extends React.Component {
       };
     	
 	async componentDidMount() {
-        const {contract, selectedStorefront} = this.props;
+        const {contract, accounts, selectedStorefront} = this.props;
         if (selectedStorefront.index < 0) {
             this.context.router.history.push("/");
           } else {
-            const rawProducts = await contract.getAllProductsFromStorefront.call(selectedStorefront.addr, selectedStorefront.index);
+            const rawProducts = await contract.methods.getAllProductsFromStorefront(selectedStorefront.addr, selectedStorefront.index).call({from: accounts[0]});
             this.setState({ products: Translator.convertProductsData(rawProducts) });
           }
     }
@@ -64,16 +64,17 @@ class Products extends React.Component {
     purchaseProductClicked = async (price, index) => {
         const {contract, accounts, selectedStorefront} = this.props;
         const {products} = this.state;
-        const tx = await contract.purchaseProduct(selectedStorefront.addr, selectedStorefront.index, index, PURCHASE_QUANTITY, {value: price, from: accounts[0]});
+        const tx = await contract.methods.purchaseProduct(selectedStorefront.addr, selectedStorefront.index, index, PURCHASE_QUANTITY).send({value: price, from: accounts[0]});
         
-        if (tx.logs[0].event === "LogPurchaseProduct") {
-            const storeOwner = tx.logs[0].args.storeOwner;
-            const storeIndex = parseInt(tx.logs[0].args.storeIndex);
-            const productIndex = parseInt(tx.logs[0].args.productIndex);
+        if (tx.events.LogPurchaseProduct) {
+            const returnValues = tx.events.LogPurchaseProduct.returnValues;
+            const storeOwner = returnValues.storeOwner;
+            const storeIndex = parseInt(returnValues.storeIndex);
+            const productIndex = parseInt(returnValues.productIndex);
             if (selectedStorefront.addr.toUpperCase() === storeOwner.toUpperCase() &&
                 selectedStorefront.index === storeIndex) 
             {
-                const quantity = parseInt(tx.logs[0].args.quantity);
+                const quantity = parseInt(returnValues.quantity);
                 let productsCopy = Object.assign([], products);
                 productsCopy[productIndex].quantity -= quantity;
                 this.setState({ products: productsCopy});

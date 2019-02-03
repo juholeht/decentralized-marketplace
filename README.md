@@ -7,7 +7,7 @@ Main focus of the project is in Smart contract implementation. UI is there just 
 
 Online Marketplace
 
-Description: Create an online marketplace that operates on the blockchain.
+Description: Create an online marketplace that operates on the blockchain and product pictures are stored in IPFS.
  
 There are a list of stores on a central marketplace where shoppers can purchase goods posted by the store owners.
  
@@ -29,11 +29,13 @@ A shopper logs into the app. The web app does not recognize their address so the
 
 ## How to set up project:
 
-1. First install dependencies by executing: `cd marketplace/client && npm install`
+1. First clone repository to your machine `git clone https://github.com/juholeht/decentralized-marketplace`
 1. Start ganache-cli by executing: `ganache-cli`
+1. Navigate to cloned `decentralized-marketplace` folder
 1. (Optional) Make sure that project compiles by executing: `truffle compile`
 1. (Optional) Make sure that project tests are executed successfully: `truffle test`
 1. Migrate contract to development environment by executing: `truffle migrate`
+1. Install dependencies by executing: `cd client && npm install`
 1. Start local server that serves UI by executing: `npm run start` 
 1. UI is now available in http://localhost:3000 (remember to use Metamask or other dapp browser)
 1. Import mnemonic to metamask (printed in ganache-cli's console) to access admin rights. Contract creator will be always administrator.

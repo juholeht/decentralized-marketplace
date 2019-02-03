@@ -18,8 +18,10 @@ export var Translator={
       },
     convertUserData(usersRaw) {
         let reformattedUsers = [];
-        for (var i = 0; i < usersRaw[0].length; i++) {
-            reformattedUsers.push({addr: usersRaw[0][i], status: this.convertUserStatusCode(parseInt(usersRaw[1][i]))});
+        if (usersRaw) {
+            for (var i = 0; i < usersRaw[0].length; i++) {
+                reformattedUsers.push({addr: usersRaw[0][i], status: this.convertUserStatusCode(parseInt(usersRaw[1][i]))});
+            }
         }
         return reformattedUsers;
     },
@@ -78,20 +80,24 @@ export var Translator={
       },
       convertToSingleString(bytes) {
           var str = '';
-          for (var i = 0; i < bytes.length; i += 2) {
-              var value = parseInt(bytes.substr(i, 2), 16);
-              if (value) {
-                  str += String.fromCharCode(value);
-              }
+          if (bytes) {
+            for (var i = 0; i < bytes.length; i += 2) {
+                var value = parseInt(bytes.substr(i, 2), 16);
+                if (value) {
+                    str += String.fromCharCode(value);
+                }
+            }
           }
           return str;
       },
       getStoreOwners(users) {
         var owners = [];
-        for (var i = 0; i < users[1].length; i++) {
-            // 1 == shop owner, 2 == admin
-            if (parseInt(users[1][i]) === 1 || parseInt(users[1][i]) === 2) {
-                owners.push(users[0][i]);
+        if (users) {
+            for (var i = 0; i < users[1].length; i++) {
+                // 1 == shop owner, 2 == admin
+                if (parseInt(users[1][i]) === 1 || parseInt(users[1][i]) === 2) {
+                    owners.push(users[0][i]);
+                }
             }
         }
         return owners;

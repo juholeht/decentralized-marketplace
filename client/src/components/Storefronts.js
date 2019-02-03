@@ -34,17 +34,17 @@ class Storefronts extends React.Component {
       };
 
       async componentDidMount() {
-        const {contract} = this.props;
+        const {contract, accounts} = this.props;
         if (contract !== null) {
-          const storefronts = await ContractAccess.getAllStorefronts(contract);
+          const storefronts = await ContractAccess.getAllStorefronts(contract, accounts[0]);
           this.setState({ storefronts: storefronts });
         }
       }
 
       async componentDidUpdate(prevProps) {
-        const {contract} = this.props;
+        const {contract, accounts} = this.props;
         if (contract !== prevProps.contract) {
-          const storefronts = await ContractAccess.getAllStorefronts(contract);
+          const storefronts = await ContractAccess.getAllStorefronts(contract, accounts[0]);
           this.setState({ storefronts: storefronts });
         }
       }
@@ -120,7 +120,10 @@ class Storefronts extends React.Component {
     };
 
     const mapStateToProps = (state) => {
-        return {contract: state.contract}
+        return {
+          contract: state.contract,
+          accounts: state.accounts
+        }
     }
   
     const mapDispatchToProps = (dispatch) => {

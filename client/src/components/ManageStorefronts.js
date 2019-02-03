@@ -81,17 +81,17 @@ class ManageStorefronts extends React.Component {
         const {contract, accounts, userStatus} = this.props;
         let storefronts = [];
         if (UsersUtil.isAdmin(userStatus)) {
-          storefronts = await ContractAccess.getAllStorefronts(contract)
+          storefronts = await ContractAccess.getAllStorefronts(contract, accounts[0])
         } else if (accounts.length > 0 && UsersUtil.isShopOwner(userStatus)) {
-          storefronts = await ContractAccess.getStorefrontsForOwner(contract, accounts[0]);
+          storefronts = await ContractAccess.getStorefrontsForOwner(contract, accounts[0], accounts[0]);
         }
         return storefronts;
       }
 
       removeStorefrontClicked = async (addr, index) => {
         const {contract, accounts} = this.props;
-        const tx = await contract.removeStorefront(addr, index, {from: accounts[0]});
-        if (tx.logs[0].event === "LogStorefrontRemoved") {
+        const tx = await contract.methods.removeStorefront(addr, index).send({from: accounts[0]});
+        if (tx.events.LogStorefrontRemoved) {
           let storefronts = await this.fetchStorefronts();
           this.setState({ storefronts: storefronts});
         }
@@ -105,13 +105,14 @@ class ManageStorefronts extends React.Component {
       async createStorefrontClicked() {
         const {contract, accounts} = this.props;
         const {storefronts} = this.state;
-        const tx = await contract.addStorefront(this.state.name, {from: accounts[0]});
+        const tx = await contract.methods.addStorefront(this.state.name).send({from: accounts[0]});
 
-        if (tx.logs[0].event === "LogNewStorefrontCreated") {
-          const storeFrontOwner = tx.logs[0].args.owner;
-          const name = tx.logs[0].args.name;
-          const balance = parseInt(tx.logs[0].args.balance);
-          const productCount = parseInt(tx.logs[0].args.productCount);
+        if (tx.events.LogNewStorefrontCreated) {
+          const returnValues = tx.events.LogNewStorefrontCreated.returnValues;
+          const storeFrontOwner = returnValues.owner;
+          const name = returnValues.name;
+          const balance = parseInt(returnValues.balance);
+          const productCount = parseInt(returnValues.productCount);
           let storefrontsCopy = Object.assign([], storefronts);
           storefrontsCopy.push({owner: storeFrontOwner, name: name, balance: balance, productCount: productCount, index: storefrontsCopy.length});
           this.setState({ storefronts: storefrontsCopy});
@@ -124,10 +125,11 @@ class ManageStorefronts extends React.Component {
 
       async createShopOwnerRequest() {
         const {contract, accounts} = this.props;
-        const tx = await contract.requestStoreOwnerStatus({from: accounts[0]});
+        const tx = await contract.methods.requestStoreOwnerStatus().send({from: accounts[0]});
 
-        if (tx.logs[0].event === "LogStoreOwnerRightsRequested") {
-          const addrWaitingApproval = tx.logs[0].args.addr;
+        if (tx.events.LogStoreOwnerRightsRequested) {
+          const returnValues = tx.events.LogStoreOwnerRightsRequested.returnValues;
+          const addrWaitingApproval = returnValues.addr;
           if (addrWaitingApproval.toUpperCase() === accounts[0].toUpperCase()) {
             this.props.userStatusUpdated(UsersUtil.SHOPPER_WAITING_APPROVAL_STATUS);
           }

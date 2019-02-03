@@ -67,12 +67,13 @@ class ManageProducts extends React.Component {
         const {contract, accounts, selectedStorefront} = this.props;
         const {name, quantity, price, products} = this.state;
         const validPrice = isNaN(price) || price.length === 0 ? "0" : price;
-        const tx = await contract.addProductToStoreFront(selectedStorefront.index, name, web3.utils.toWei(validPrice, "ether"), quantity, {from: accounts[0]});
-
-        if (tx.logs[0].event === "LogNewProductAdded") {
-          const name = tx.logs[0].args.name;
-          const price = parseInt(tx.logs[0].args.price);
-          const quantity = parseInt(tx.logs[0].args.quantity);
+        const priceInWei = web3.utils.toWei(validPrice, "ether");
+        const tx = await contract.methods.addProductToStoreFront(selectedStorefront.index, name, priceInWei, quantity).send({from: accounts[0]});
+        if (tx.events.LogNewProductAdded) {
+          const returnValues = tx.events.LogNewProductAdded.returnValues;
+          const name = returnValues.name;
+          const price = parseInt(returnValues.price);
+          const quantity = parseInt(returnValues.quantity);
           let productsCopy = Object.assign([], products);
           productsCopy.push({name: name, price: price, quantity: quantity, index: productsCopy.length, ipfsHash: ""});
           this.setState({ 
@@ -104,8 +105,8 @@ class ManageProducts extends React.Component {
       const {contract, selectedStorefront, accounts} = this.props;
       const {products} = this.state;
 
-      const tx = await contract.updateIpfsHashForProductPic(selectedStorefront.index, index, hashInBytes, {from: accounts[0]});
-      if (tx.logs[0].event === "LogProductPictureIpfsHashAdded") {
+      const tx = await contract.methods.updateIpfsHashForProductPic(selectedStorefront.index, index, hashInBytes).send({from: accounts[0]});
+      if (tx.events.LogProductPictureIpfsHashAdded) {
         let productsCopy = Object.assign([], products);
         productsCopy[index].ipfsHash = IpfsUtil.bytes32ToIPFSHash(hashInBytes);
         this.setState({ 
@@ -125,27 +126,28 @@ class ManageProducts extends React.Component {
     };
 
     async componentDidMount() {
-        const {contract, selectedStorefront} = this.props;
+        const {contract, selectedStorefront, accounts} = this.props;
         if (selectedStorefront.index < 0) {
           this.context.router.history.push("/");
         } else {
-          const rawProducts = await contract.getAllProductsFromStorefront.call(selectedStorefront.addr, selectedStorefront.index);
+          const rawProducts = await contract.methods.getAllProductsFromStorefront(selectedStorefront.addr, selectedStorefront.index).call({from: accounts[0]});
           this.setState({ products: Translator.convertProductsData(rawProducts) });
         }
     }
 
     updateProductPriceClicked = async (index) => {
         const {contract, selectedStorefront, accounts} = this.props;
-        await contract.updatePrice(selectedStorefront.index, index, this.state.products[index].price, {from: accounts[0]});
+        await contract.methods.updatePrice(selectedStorefront.index, index, this.state.products[index].price).send({from: accounts[0]});
     }
 
     removeProductClicked = async (index) => {
         const {contract, selectedStorefront, accounts} = this.props;
         const {products, picProductIndex} = this.state;
-        const tx = await contract.removeProductFromStorefront(selectedStorefront.addr, selectedStorefront.index, index, {from: accounts[0]});
+        const tx = await contract.methods.removeProductFromStorefront(selectedStorefront.addr, selectedStorefront.index, index).send({from: accounts[0]});
 
-        if (tx.logs[0].event === "LogProductRemoved") {
-            const index = parseInt(tx.logs[0].args.index);
+        if (tx.events.LogProductRemoved) {
+            const returnValues = tx.events.LogProductRemoved.returnValues; 
+            const index = parseInt(returnValues.index);
             let productsCopy = Object.assign([], products);
             let productToBeMoved = products[productsCopy.length - 1];
             productToBeMoved.index = index;
@@ -176,7 +178,7 @@ class ManageProducts extends React.Component {
     }
 
     updatePriceChange = index => event => {
-        let productsCopy = Object.assign({}, this.state.products);
+        let productsCopy = Object.assign([], this.state.products);
         const price = event.target.value;
         const validPrice = isNaN(price) || price.length === 0 ? "0" : price;
 

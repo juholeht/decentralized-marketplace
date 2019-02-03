@@ -45,17 +45,18 @@ class Users extends React.Component {
     }
 
     async fetchUsers() {
-        const {contract} = this.props;
-        const usersRaw = await contract.getUsers.call();
+        const {contract, accounts} = this.props;
+        const usersRaw = await contract.methods.getUsers().call({from: accounts[0]});
         this.setState({ users: Translator.convertUserData(usersRaw) });
     }
 
     async grantShopOwnerRightsClicked(addr) {
         const {contract, accounts} = this.props;
-        const tx = await contract.addStoreOwner(addr, {from: accounts[0]});
+        const tx = await contract.methods.addStoreOwner(addr).send({from: accounts[0]});
 
-        if (tx.logs[0].event === "LogStoreOwnerRightsGranted") {
-            const changedAddress = tx.logs[0].args.addr;
+        if (tx.events.LogStoreOwnerRightsGranted) {
+            const returnValues = tx.events.LogStoreOwnerRightsGranted.returnValues;
+            const changedAddress = returnValues.addr;
             const usersModified = this.updateUserStatus(changedAddress, Object.assign([], this.state.users), UsersUtil.SHOP_OWNER_STATUS);
             this.setState({usersModified});
         }
@@ -63,10 +64,11 @@ class Users extends React.Component {
 
     async grantAdminRightsClicked(addr) {
         const {contract, accounts} = this.props;
-        const tx = await contract.addAdmin(addr,{from: accounts[0]});
+        const tx = await contract.methods.addAdmin(addr).send({from: accounts[0]});
 
-        if (tx.logs[0].event === "LogAdminRightsGranted") {
-            const changedAddress = tx.logs[0].args.addr;
+        if (tx.events.LogAdminRightsGranted) {
+            const returnValues = tx.events.LogAdminRightsGranted.returnValues;
+            const changedAddress = returnValues.addr;
             const usersModified = this.updateUserStatus(changedAddress, Object.assign([], this.state.users), UsersUtil.ADMIN_STATUS);
             this.setState({usersModified});
         }
@@ -88,12 +90,11 @@ class Users extends React.Component {
     async removeUserClicked(addr) {
         const {contract, accounts} = this.props;
         const {users} = this.state;
-        const tx = await contract.deleteUser(addr, {from: accounts[0]});
-        if (tx.logs[0].event === "LogDeleteUser") {
-            const removedUser = tx.logs[0].args.addr;
+        const tx = await contract.methods.deleteUser(addr).send({from: accounts[0]});
+        if (tx.events.LogDeleteUser) {
+            const returnValues = tx.events.LogDeleteUser.returnValues;
+            const removedUser = returnValues.addr;
             const usersModified = this.removeUser(removedUser, Object.assign([], users));
-            console.log(usersModified);
-            console.log(removedUser);
             this.setState({users: usersModified});
         }
     }
