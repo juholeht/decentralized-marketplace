@@ -7,7 +7,7 @@
     "@material-ui/icons": "latest",
     "bs58": "^4.0.1",
     "classnames": "latest",
-    "ipfs-http-client": "^29.0.0",
+    "ipfs-http-client": "29.1.0",
     "prop-types": "latest",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
