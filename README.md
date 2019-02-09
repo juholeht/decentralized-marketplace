@@ -20,9 +20,11 @@ An approved store owner logs into the app. The web app recognizes their address 
  
 A shopper logs into the app. The web app does not recognize their address so they are shown the generic shopper application. From the main page they can browse all of the storefronts that have been created in the marketplace. Clicking on a storefront will take them to a product page. They can see a list of products offered by the store, including their price and quantity. Shoppers can purchase a product, which will debit their account and send it to the store. The quantity of the item in the store’s inventory will be reduced by the appropriate amount.
 
-## Requirements to access easyly project
+## Requirements for hosted project
 1. Dapp browser or Metamask extension: https://metamask.io
 1. Go to https://decentralized-marketplace.herokuapp.com/managestorefronts
+
+UI is hosted in herokuapp and is using public IPFS gateway. Uploading / loading images might be a bit slow sometimes. State change in UI should be visible once transaction is confirmed. So patience is the key :)
 
 ## Requirements to run project locally
 1. Dapp browser or Metamask extension: https://metamask.io
