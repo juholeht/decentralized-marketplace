@@ -22,6 +22,7 @@ A shopper logs into the app. The web app does not recognize their address so the
 
 ## Requirements for accessing hosted project
 1. Dapp browser or Metamask extension: https://metamask.io
+1. Choose Rinkeby testnet from browser/metamask
 1. Go to https://decentralized-marketplace.herokuapp.com/managestorefronts
 
 UI is hosted in herokuapp and is using public IPFS gateway. Uploading / loading images might be a bit slow sometimes. State change in UI should be visible once transaction is confirmed. So patience is the key :)
